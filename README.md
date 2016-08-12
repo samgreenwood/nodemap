@@ -6,6 +6,7 @@ Some sort of prototype node map.
  
 ````
 git clone https://github.com/samgreenwood/nodemap
+cd nodemap
 composer install
 php -S 0.0.0.0:8888 -t web/
 ````
