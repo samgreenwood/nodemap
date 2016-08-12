@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Air-Stream Map</title>
+    <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      #map {
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPRdAnmEnQG73M35lm3nlg7o6lJFpjZ-g"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
+    <script>
+      $(document).ready(function()
+      {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 11,
+          center: {lat: -34.9285, lng: 138.6007}
+        });
+
+        $.getJSON('/api/nodes', function(nodes)
+        {
+          $.each(nodes, function(index, node)
+          {
+            new google.maps.Marker({
+              position: {lat: node.coordinates.lat, lng: node.coordinates.lng},
+              map: map,
+              title: node.name,
+            });
+          });
+        });
+
+        $.getJSON('/api/links', function(links)
+        {
+          $.each(links, function(index, link)
+          {
+            var googleLink = new google.maps.Polyline({
+              path: [
+                {lat: link.source.coordinates.lat, lng: link.source.coordinates.lng},
+                {lat: link.destination.coordinates.lat, lng: link.destination.coordinates.lng}
+              ],
+              strokeOpacity: 1.0,
+              geodesic: true,
+              strokeWeight: 3,
+              strokeColor: '#000099'
+            });
+
+            if(link.type == 'BB')
+            {
+              googleLink.strokeColor = '#ff3300';
+            }
+
+            googleLink.setMap(map);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
