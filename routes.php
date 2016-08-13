@@ -1,15 +1,6 @@
 <?php
 
-$app->get('/', function ($request, $response, $args) {
-    return $response->write(file_get_contents('../templates/index.html'));
-});
 
-$app->get('/api/nodes', function ($request, $response, $args) use($app) {
-    $nodes = $this->nodeRepository->findAll();
-    return $response->write(json_encode($nodes));
-});
-
-$app->get('/api/links', function ($request, $response, $args) use($app) {
-    $links = $this->linkRepository->findAll();
-    return $response->write(json_encode($links));
-});
+$app->get('/', [\Map\Http\Controllers\MapController::class, 'index']);
+$app->get('/api/links', [\Map\Http\Controllers\API\LinkController::class, 'index']);
+$app->get('/api/nodes', [\Map\Http\Controllers\API\NodeController::class, 'index']);

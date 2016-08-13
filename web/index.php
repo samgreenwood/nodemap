@@ -2,7 +2,7 @@
 
 include '../bootstrap.php';
 
-$app = new \Slim\App($container);
+$app = new Map\Application();
 
 include '../routes.php';
 

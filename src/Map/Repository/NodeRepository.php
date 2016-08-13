@@ -4,22 +4,22 @@ namespace Map\Repository;
 
 use Map\Entities\Coordinates;
 use Map\Entities\Node;
-use SimpleXMLElement;
+use Map\Reader\AirStreamXMLReader;
 
 class NodeRepository
 {
     /**
-     * @var SimpleXMLElement
+     * @var AirStreamXMLReader
      */
-    private $data;
+    private $reader;
 
     /**
      * NodeRepository constructor.
-     * @param SimpleXMLElement $data
+     * @param AirStreamXMLReader $reader
      */
-    public function __construct(SimpleXMLElement $data)
+    public function __construct(AirStreamXMLReader $reader)
     {
-        $this->data = $data;
+        $this->reader = $reader;
     }
 
     /**
@@ -27,7 +27,7 @@ class NodeRepository
      */
     public function findAll()
     {
-        $data = (array) $this->data;
+        $data = (array) $this->reader->read();
         $data = array_pop($data);
 
         return array_combine(array_map(function($node) {

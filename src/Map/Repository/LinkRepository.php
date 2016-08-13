@@ -4,14 +4,14 @@ namespace Map\Repository;
 
 use Map\Entities\Link;
 use Map\Entities\Node;
-use SimpleXMLElement;
+use Map\Reader\AirStreamXMLReader;
 
 class LinkRepository
 {
     /**
-     * @var SimpleXMLElement
+     * @var AirStreamXMLReader
      */
-    private $data;
+    private $reader;
 
     /**
      * @var NodeRepository
@@ -20,13 +20,13 @@ class LinkRepository
 
     /**
      * LinkRepository constructor.
-     * @param SimpleXMLElement $data
+     * @param AirStreamXMLReader $reader
      * @param NodeRepository $nodeRepository
      */
-    public function __construct(SimpleXMLElement $data, NodeRepository $nodeRepository)
+    public function __construct(AirStreamXMLReader $reader, NodeRepository $nodeRepository)
     {
+        $this->reader = $reader;
         $this->nodeRepository = $nodeRepository;
-        $this->data = $data;
     }
 
     /**
@@ -34,7 +34,7 @@ class LinkRepository
      */
     public function findAll()
     {
-        $data = (array) $this->data;
+        $data = (array) $this->reader->read();
         $data = array_pop($data);
 
         $nodes = $this->nodeRepository->findAll();
