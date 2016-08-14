@@ -3,57 +3,40 @@
 namespace Map\Repository;
 
 use Map\Entities\Link;
-use Map\Entities\Node;
-use Map\Reader\AirStreamXMLReader;
 
 class LinkRepository
 {
     /**
-     * @var AirStreamXMLReader
+     * @var array
      */
-    private $reader;
-
-    /**
-     * @var NodeRepository
-     */
-    private $nodeRepository;
+    private $links;
 
     /**
      * LinkRepository constructor.
-     * @param AirStreamXMLReader $reader
-     * @param NodeRepository $nodeRepository
+     * @param $links
      */
-    public function __construct(AirStreamXMLReader $reader, NodeRepository $nodeRepository)
+    public function __construct(array $links = [])
     {
-        $this->reader = $reader;
-        $this->nodeRepository = $nodeRepository;
+        $this->links = $links;
     }
 
     /**
-     * @return Node[]
+     * @return Link[]
      */
     public function findAll()
     {
-        $data = (array) $this->reader->read();
-        $data = array_pop($data);
+        return $this->links;
+    }
 
-        $nodes = $this->nodeRepository->findAll();
-
-        $links = [];
-
-        foreach($data as $node)
+    /**
+     * @param int $nodeId
+     * @return array
+     */
+    public function findByNodeId(int $nodeId)
+    {
+        return array_filter($this->links, function(Link $link) use ($nodeId)
         {
-            foreach((array) $node->link as $link)
-            {
-                $links[] = new Link(
-                    $nodes[(string) $node['id']],
-                    $nodes[(string) $link['dstnode']],
-                    $link['mode'],
-                    $link['type']
-                );
-            }
-        }
-
-        return $links;
+            return $link->getDestination()->getId() == $nodeId|| $link->getSource()->getId() == $nodeId;
+        });
     }
 }

@@ -1,3 +1,5 @@
+.env
 cookie.txt
-nodes.xml
 vendor
+cache/application/*
+cache/twig/*

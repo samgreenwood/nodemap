@@ -1,68 +1,90 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
     <title>Air-Stream Map</title>
     <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
-      #map {
-        height: 100%;
-      }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+        }
     </style>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPRdAnmEnQG73M35lm3nlg7o6lJFpjZ-g"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
-    <script>
-      $(document).ready(function()
-      {
+</head>
+<body>
+<div id="map"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPRdAnmEnQG73M35lm3nlg7o6lJFpjZ-g"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
+<script>
+    $(document).ready(function()
+    {
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 11,
-          center: {lat: -34.9285, lng: 138.6007}
+            zoom: 11,
+            center: {lat: -34.9285, lng: 138.6007}
         });
 
-        $.getJSON('/api/nodes', function(nodes)
-        {
-          $.each(nodes, function(index, node)
-          {
-            new google.maps.Marker({
-              position: {lat: node.coordinates.lat, lng: node.coordinates.lng},
-              map: map,
-              title: node.name,
-            });
-          });
-        });
-
-        $.getJSON('/api/links', function(links)
-        {
-          $.each(links, function(index, link)
-          {
-            var googleLink = new google.maps.Polyline({
-              path: [
-                {lat: link.source.coordinates.lat, lng: link.source.coordinates.lng},
-                {lat: link.destination.coordinates.lat, lng: link.destination.coordinates.lng}
-              ],
-              strokeOpacity: 1.0,
-              geodesic: true,
-              strokeWeight: 3,
-              strokeColor: '#000099'
-            });
-
-            if(link.type == 'BB')
+        $.getJSON('/api/nodes', function(nodes) {
+            $.each(nodes, function(index, node)
             {
-              googleLink.strokeColor = '#ff3300';
-            }
+               var marker = new google.maps.Marker({
+                    position: {lat: node.coordinates.lat, lng: node.coordinates.lng},
+                    map: map,
+                    title: node.name,
+                });
 
-            googleLink.setMap(map);
-          });
+                if(node.accessPoint) {
+                    marker.setIcon('/img/mm_20_yellow.png');
+                } else {
+                    marker.setIcon('/img/mm_20_green.png');
+                }
+
+                marker.setMap(map);
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: node.name
+                });
+
+                marker.addListener('mouseover', function() {
+                    infowindow.open(map, marker);
+                });
+
+                marker.addListener('mouseout', function() {
+                    infowindow.close(map, marker);
+                });
+
+                marker.addListener('click', function() {
+                    map.setZoom(14);
+                    map.setCenter(marker.getPosition());
+                });
+            });
         });
-      });
-    </script>
-  </body>
+
+        $.getJSON('/api/links', function(links) {
+            $.each(links, function(index, link)
+            {
+                var googleLink = new google.maps.Polyline({
+                    path: [
+                        {lat: link.source.coordinates.lat, lng: link.source.coordinates.lng},
+                        {lat: link.destination.coordinates.lat, lng: link.destination.coordinates.lng}
+                    ],
+                    strokeOpacity: 1.0,
+                    geodesic: true,
+                    strokeWeight: 2,
+                    strokeColor: '#000099'
+                });
+
+                if(link.type == 'BB') {
+                    googleLink.strokeColor = '#ff3300';
+                }
+
+                googleLink.setMap(map);
+            });
+        });
+    });
+</script>
+</body>
 </html>

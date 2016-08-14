@@ -22,15 +22,23 @@ class Node implements JsonSerializable
     protected $coordinates;
 
     /**
-     * Node constructor.
-     * @param $name
-     * @param Coordinates $coordinates
+     * @var bool
      */
-    public function __construct(int $id, string $name, Coordinates $coordinates)
+    private $accessPoint;
+
+    /**
+     * Node constructor.
+     * @param int $id
+     * @param string $name
+     * @param Coordinates $coordinates
+     * @param bool $accessPoint
+     */
+    public function __construct(int $id, string $name, Coordinates $coordinates, bool $accessPoint)
     {
         $this->id = $id;
         $this->name = $name;
         $this->coordinates = $coordinates;
+        $this->accessPoint = $accessPoint;
     }
 
     /**
@@ -42,6 +50,32 @@ class Node implements JsonSerializable
            'id' => $this->id,
            'name' => $this->name,
            'coordinates' => $this->coordinates,
+           'accessPoint' => $this->accessPoint
        ];
     }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return Coordinates
+     */
+    public function getCoordinates(): Coordinates
+    {
+        return $this->coordinates;
+    }
+
 }

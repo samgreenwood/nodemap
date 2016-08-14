@@ -6,7 +6,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Authentication\AuthenticationServiceInterface;
 
-class Authenticated
+class RedirectIfAuthenticated
 {
     /**
      * @var AuthenticationServiceInterface
@@ -30,11 +30,11 @@ class Authenticated
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
-        if(!$this->authenticationService->hasIdentity())
+        if($this->authenticationService->hasIdentity())
         {
             return $response
                 ->withStatus(302)
-                ->withHeader('Location', (string) '/login');
+                ->withHeader('Location', (string) '/');
         }
 
         return $next($request, $response);

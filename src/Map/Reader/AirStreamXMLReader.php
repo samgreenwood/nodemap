@@ -2,6 +2,10 @@
 
 namespace Map\Reader;
 
+use Doctrine\Common\Cache\Cache;
+use Map\Entities\Coordinates;
+use Map\Entities\Link;
+use Map\Entities\Node;
 use SimpleXMLElement;
 
 class AirStreamXMLReader
@@ -17,21 +21,86 @@ class AirStreamXMLReader
     private $nodeDbPassword;
 
     /**
-     * AirStreamXMLReader constructor.
-     * @param $nodeDbUsername
-     *
-     * @param $nodeDbPassword
+     * @var Cache
      */
-    public function __construct($nodeDbUsername, $nodeDbPassword)
+    private $cache;
+
+    /**
+     * AirStreamXMLReader constructor.
+     * @param string $nodeDbUsername
+     * @param string $nodeDbPassword
+     * @param Cache $cache
+     */
+    public function __construct(string $nodeDbUsername, string $nodeDbPassword, Cache $cache)
     {
         $this->nodeDbUsername = $nodeDbUsername;
         $this->nodeDbPassword = $nodeDbPassword;
+        $this->cache = $cache;
     }
 
     /**
-     * @return SimpleXMLElement
+     * @return Node[]
      */
-    public function read() : SimpleXMLElement
+    public function nodes() : array
+    {
+//        if($this->cache->contains('nodes')) return $this->cache->fetch('nodes');
+
+        $data = $this->xml();
+
+        $data = array_filter($data, function($node) {
+            return $node['status'] == 3;
+        });
+
+        $nodes = array_combine(array_map(function($node) {
+            return $node['id'];
+        }, $data), array_map(function($node) {
+            $coordinates = new Coordinates((float) $node['lat'], (float) $node['lon']);
+            $accessPoint = count( (array) $node->ap);
+            return new Node((integer) $node['id'], (string) $node['name'], $coordinates, $accessPoint);
+        }, $data));
+
+        $this->cache->save('nodes', $nodes, 300);
+
+        return $nodes;
+    }
+
+    /**
+     * @return Link[]
+     */
+    public function links() : array
+    {
+        if($this->cache->contains('links')) return $this->cache->fetch('links');
+
+        $data = $this->xml();
+
+        $nodes = $this->nodes();
+
+        foreach($data as $node)
+        {
+            foreach($node->link as $link)
+            {
+                if(array_key_exists((string) $node['id'], $nodes) && array_key_exists((string) $link['dstnode'], $nodes))
+                {
+                    $links[] = new Link(
+                        $nodes[(string) $node['id']],
+                        $nodes[(string) $link['dstnode']],
+                        $link['mode'],
+                        $link['type']
+                    );
+                }
+
+            }
+        }
+
+        $this->cache->save('links', $links, 300);
+
+        return $links;
+    }
+
+    /**
+     * @return array
+     */
+    private function xml() : array
     {
         $ch = curl_init();
 
@@ -49,10 +118,12 @@ class AirStreamXMLReader
         curl_setopt($ch, CURLOPT_HTTPGET, 1);
         curl_setopt($ch, CURLOPT_URL, 'https://members.air-stream.org/node/xmlnodes');
 
-        $nodeXml = curl_exec($ch);
+        $data = curl_exec($ch);
 
         curl_close($ch);
 
-        return new SimpleXMLElement($nodeXml);
+        $xml = new SimpleXMLElement($data);
+        $xml = (array) $xml;
+        return array_pop($xml);
     }
 }
