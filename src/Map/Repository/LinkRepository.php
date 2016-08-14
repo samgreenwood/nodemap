@@ -30,7 +30,7 @@ class LinkRepository
 
     /**
      * @param int $nodeId
-     * @return array
+     * @return Link[]
      */
     public function findByNodeId(int $nodeId)
     {
