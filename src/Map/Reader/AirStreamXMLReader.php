@@ -43,19 +43,21 @@ class AirStreamXMLReader
      */
     public function nodes() : array
     {
-//        if($this->cache->contains('nodes')) return $this->cache->fetch('nodes');
+        if ($this->cache->contains('nodes')) {
+            return $this->cache->fetch('nodes');
+        }
 
         $data = $this->xml();
 
-        $data = array_filter($data, function($node) {
+        $data = array_filter($data, function ($node) {
             return $node['status'] == 3;
         });
 
-        $nodes = array_combine(array_map(function($node) {
+        $nodes = array_combine(array_map(function ($node) {
             return $node['id'];
-        }, $data), array_map(function($node) {
+        }, $data), array_map(function ($node) {
             $coordinates = new Coordinates((float) $node['lat'], (float) $node['lon']);
-            $accessPoint = count( (array) $node->ap);
+            $accessPoint = count((array) $node->ap);
             return new Node((integer) $node['id'], (string) $node['name'], $coordinates, $accessPoint);
         }, $data));
 
@@ -69,18 +71,17 @@ class AirStreamXMLReader
      */
     public function links() : array
     {
-        if($this->cache->contains('links')) return $this->cache->fetch('links');
+        if ($this->cache->contains('links')) {
+            return $this->cache->fetch('links');
+        }
 
         $data = $this->xml();
 
         $nodes = $this->nodes();
 
-        foreach($data as $node)
-        {
-            foreach($node->link as $link)
-            {
-                if(array_key_exists((string) $node['id'], $nodes) && array_key_exists((string) $link['dstnode'], $nodes))
-                {
+        foreach ($data as $node) {
+            foreach ($node->link as $link) {
+                if (array_key_exists((string) $node['id'], $nodes) && array_key_exists((string) $link['dstnode'], $nodes)) {
                     $links[] = new Link(
                         $nodes[(string) $node['id']],
                         $nodes[(string) $link['dstnode']],
@@ -88,7 +89,6 @@ class AirStreamXMLReader
                         $link['type']
                     );
                 }
-
             }
         }
 

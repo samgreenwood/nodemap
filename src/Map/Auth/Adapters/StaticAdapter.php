@@ -17,12 +17,10 @@ class StaticAdapter extends AbstractAdapter
     {
         $authenticated = $this->getIdentity() == 'admin' && $this->getCredential() == 'admin';
 
-        if($authenticated)
-        {
+        if ($authenticated) {
             return new Result(Result::SUCCESS, 'admin');
         }
 
         return new Result(Result::FAILURE_CREDENTIAL_INVALID);
-
     }
 }

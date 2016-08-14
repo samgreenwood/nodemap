@@ -46,7 +46,7 @@ class Node implements JsonSerializable
      */
     public function jsonSerialize()
     {
-       return [
+        return [
            'id' => $this->id,
            'name' => $this->name,
            'coordinates' => $this->coordinates,
@@ -77,5 +77,4 @@ class Node implements JsonSerializable
     {
         return $this->coordinates;
     }
-
 }

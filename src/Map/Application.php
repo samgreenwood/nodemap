@@ -38,23 +38,19 @@ class Application extends App
 
                 return $twig;
             },
-            AirStreamXMLReader::class => function()
-            {
-                $cache = new FilesystemCache( __DIR__ . '/../../cache/application');
+            AirStreamXMLReader::class => function () {
+                $cache = new FilesystemCache(__DIR__ . '/../../cache/application');
                 return new AirStreamXMLReader(getenv('NODEDB_USERNAME'), getenv('NODEDB_PASSWORD'), $cache);
             },
-            NodeRepository::class => function(ContainerInterface $c)
-            {
+            NodeRepository::class => function (ContainerInterface $c) {
                 $data = $c->get(AirStreamXMLReader::class)->nodes();
                 return new NodeRepository($data);
             },
-            LinkRepository::class => function(ContainerInterface $c)
-            {
+            LinkRepository::class => function (ContainerInterface $c) {
                 $data = $c->get(AirStreamXMLReader::class)->links();
                 return new LinkRepository($data);
             },
-            AuthenticationServiceInterface::class => function(ContainerInterface $c)
-            {
+            AuthenticationServiceInterface::class => function (ContainerInterface $c) {
                 $authenticationService = new AuthenticationService();
                 $authenticationService->setStorage($c->get(Session::class));
                 $authenticationService->setAdapter($c->get(getenv('AUTH_ADAPTER') ?: StaticAdapter::class));

@@ -34,9 +34,8 @@ class LinkRepository
      */
     public function findByNodeId(int $nodeId)
     {
-        return array_filter($this->links, function(Link $link) use ($nodeId)
-        {
-            return $link->getDestination()->getId() == $nodeId|| $link->getSource()->getId() == $nodeId;
+        return array_filter($this->links, function (Link $link) use ($nodeId) {
+            return $link->getDestination()->getId() == $nodeId || $link->getSource()->getId() == $nodeId;
         });
     }
 }

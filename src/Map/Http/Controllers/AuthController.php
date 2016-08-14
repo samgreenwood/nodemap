@@ -49,7 +49,9 @@ class AuthController
     {
         $auth = $this->auth->attempt($request->getParam('username'), $request->getParam('password'));
 
-        if(!$auth) return $response->withRedirect('/login');
+        if (!$auth) {
+            return $response->withRedirect('/login');
+        }
 
         return $response->withRedirect('/');
     }

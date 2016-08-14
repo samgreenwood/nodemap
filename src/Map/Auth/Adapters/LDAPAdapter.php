@@ -25,8 +25,7 @@ class LDAPAdapter extends AbstractAdapter
             $this->getCredential()
         );
 
-        if($authenticated)
-        {
+        if ($authenticated) {
             return new Result(Result::SUCCESS, $this->getIdentity());
         }
 

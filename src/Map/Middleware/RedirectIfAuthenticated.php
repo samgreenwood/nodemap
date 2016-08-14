@@ -30,8 +30,7 @@ class RedirectIfAuthenticated
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
-        if($this->authenticationService->hasIdentity())
-        {
+        if ($this->authenticationService->hasIdentity()) {
             return $response
                 ->withStatus(302)
                 ->withHeader('Location', (string) '/');

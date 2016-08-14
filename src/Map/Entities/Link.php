@@ -74,9 +74,9 @@ class Link implements \JsonSerializable
     /**
      * @return array
      */
-    function jsonSerialize()
+    public function jsonSerialize()
     {
-       return [
+        return [
            'source' => $this->source,
            'destination' => $this->destination,
            'frequency' => $this->frequency,
