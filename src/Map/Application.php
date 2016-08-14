@@ -3,7 +3,6 @@
 namespace Map;
 
 use Map\Auth\Adapters\StaticAdapter;
-use Map\Auth\Authenticator;
 use Map\Auth\StaticAuthenticator;
 use Map\Repository\LinkRepository;
 use Map\Repository\NodeRepository;

@@ -2,24 +2,24 @@
 
 namespace Map\Middleware;
 
+use Map\Auth\Authenticator;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Authentication\AuthenticationServiceInterface;
 
 class Authenticated
 {
     /**
-     * @var AuthenticationServiceInterface
+     * @var Authenticator
      */
-    private $authenticationService;
+    private $auth;
 
     /**
      * Authenticated constructor.
-     * @param AuthenticationServiceInterface $authenticationService
+     * @param Authenticator $auth
      */
-    public function __construct(AuthenticationServiceInterface $authenticationService)
+    public function __construct(Authenticator $auth)
     {
-        $this->authenticationService = $authenticationService;
+        $this->auth = $auth;
     }
 
     /**
@@ -30,7 +30,7 @@ class Authenticated
      */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, callable $next)
     {
-        if (!$this->authenticationService->hasIdentity()) {
+        if (!$this->auth->authenticated()) {
             return $response
                 ->withStatus(302)
                 ->withHeader('Location', (string) '/login');

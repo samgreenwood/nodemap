@@ -36,4 +36,12 @@ class Authenticator
     {
         $this->auth->clearIdentity();
     }
+
+    /**
+     * @return bool
+     */
+    public function authenticated()
+    {
+        return $this->auth->hasIdentity();
+    }
 }
