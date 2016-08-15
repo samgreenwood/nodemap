@@ -49,16 +49,23 @@ class AirStreamXMLReader
 
         $data = $this->xml();
 
-        $data = array_filter($data, function ($node) {
-            return $node['status'] == 3;
-        });
-
         $nodes = array_combine(array_map(function ($node) {
             return $node['id'];
         }, $data), array_map(function ($node) {
+
+            $statusLookup = [
+                0 => 'Potential',
+                1 => 'Planning',
+                2 => 'In Build',
+                3 => 'Online',
+                4 => 'Offline'
+            ];
+
             $coordinates = new Coordinates((float) $node['lat'], (float) $node['lon']);
             $accessPoint = count((array) $node->ap);
-            return new Node((integer) $node['id'], (string) $node['name'], $coordinates, $accessPoint);
+            $status = $statusLookup[(integer) $node['status']];
+
+            return new Node((integer) $node['id'], (string) $node['name'], $coordinates, $accessPoint, $status);
         }, $data));
 
         $this->cache->save('nodes', $nodes, 300);
