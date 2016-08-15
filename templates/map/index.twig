@@ -69,11 +69,18 @@
 
         $.getJSON('/api/links', function(links) {
 
-            var lineSymbol = {
+            var greyLine = {
                 path: 'M 0,-1 0,1',
                 strokeOpacity: 1,
                 scale: 2,
                 strokeColor: 'grey'
+            };
+
+            var yellowLine = {
+                path: 'M 0,-1 0,1',
+                strokeOpacity: 1,
+                scale: 2,
+                strokeColor: '#F1C32F'
             };
 
             $.each(links, function(index, link)
@@ -92,7 +99,14 @@
 
                     if(link.source.status == 'Potential' || link.destination.status == 'Potential') {
                         googleLink.icons = [{
-                            icon: lineSymbol,
+                            icon: greyLine,
+                            offset: '0',
+                            repeat: '10px'
+                        }];
+                    } if(link.source.status == 'In Build' || link.destination.status == 'In Build' ||
+                            link.source.status == 'Planning' || link.destination.status == 'Planning') {
+                        googleLink.icons = [{
+                            icon: yellowLine,
                             offset: '0',
                             repeat: '10px'
                         }];
