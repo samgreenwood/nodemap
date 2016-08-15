@@ -103,7 +103,7 @@
                             offset: '0',
                             repeat: '10px'
                         }];
-                    } if(link.source.status == 'In Build' || link.destination.status == 'In Build' ||
+                    } else if(link.source.status == 'In Build' || link.destination.status == 'In Build' ||
                             link.source.status == 'Planning' || link.destination.status == 'Planning') {
                         googleLink.icons = [{
                             icon: yellowLine,
