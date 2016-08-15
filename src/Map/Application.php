@@ -57,8 +57,7 @@ class Application extends App
 
                 return $authenticationService;
             },
-            Manager::class => function ()
-            {
+            Manager::class => function () {
                 $settings = [
                     'driver' => getenv('DB_DRIVER') ?: 'mysql',
                     'host' => getenv('DB_HOST') ?: 'localhost',
