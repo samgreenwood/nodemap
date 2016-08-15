@@ -10,3 +10,6 @@ function dd($x)
 {
     die(var_dump($x));
 }
+
+$app = new Map\Application();
+$app->getContainer()->get(\Illuminate\Database\Capsule\Manager::class);

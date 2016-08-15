@@ -2,6 +2,7 @@
 
 namespace Map;
 
+use Illuminate\Database\Capsule\Manager;
 use Map\Auth\Adapters\StaticAdapter;
 use Map\Auth\StaticAuthenticator;
 use Map\Repository\LinkRepository;
@@ -56,8 +57,26 @@ class Application extends App
 
                 return $authenticationService;
             },
+            Manager::class => function ()
+            {
+                $settings = [
+                    'driver' => getenv('DB_DRIVER') ?: 'mysql',
+                    'host' => getenv('DB_HOST') ?: 'localhost',
+                    'database' => getenv('DB_DATABASE') ?: 'map',
+                    'user' => getenv('DB_USER') ?: 'root',
+                    'password' => getenv('DB_PASSWORD') ?: '',
+                ];
+
+                $capsule = new Manager;
+                $capsule->addConnection($settings);
+
+                $capsule->setAsGlobal();
+                $capsule->bootEloquent();
+
+                return $capsule;
+            },
             'settings.displayErrorDetails' => true,
-            'settings.determineRouteBeforeAppMiddleware' => true
+            'settings.determineRouteBeforeAppMiddleware' => true,
         ];
 
         $builder->useAutowiring(true);
