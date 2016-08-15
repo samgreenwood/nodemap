@@ -104,7 +104,7 @@ class AirStreamXMLReader
     {
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, 'https://members.air-stream.org/login');
+        curl_setopt($ch, CURLOPT_URL, 'https://members.air-stream.wan/login');
         curl_setopt($ch, CURLOPT_COOKIEJAR, 'cookie.txt');
         curl_setopt($ch, CURLOPT_COOKIEFILE, 'cookie.txt');
         curl_setopt($ch, CURLOPT_POST, true);
@@ -116,7 +116,7 @@ class AirStreamXMLReader
         curl_exec($ch);
 
         curl_setopt($ch, CURLOPT_HTTPGET, 1);
-        curl_setopt($ch, CURLOPT_URL, 'https://members.air-stream.org/node/xmlnodes');
+        curl_setopt($ch, CURLOPT_URL, 'https://members.air-stream.wan/node/xmlnodes');
 
         $data = curl_exec($ch);
 
