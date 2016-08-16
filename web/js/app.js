@@ -151,7 +151,7 @@ $(document).ready(function() {
         });
 
         $('#nodedb').on('load', function() {
-            this.height = screen.height - 300;
+            $(this).css('height', $(document).height() - 350);
         });
 
     });
