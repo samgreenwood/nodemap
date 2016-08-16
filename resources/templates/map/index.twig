@@ -12,29 +12,50 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+        #sidebar
+        {
+            width: 430px;
+            float: left;
+        }
+
         #map {
             height: 100%;
+            width: calc(100% - 430px);
+            float: right;
         }
 
-        #legend {
-            position: absolute;
-            bottom: 50px;
-            left: 50px;
-            min-height: 115px;
-            min-width: 120px;
-            background: white;
+        #toggle {
+            padding-bottom: 20px;
         }
 
-        #toggle
+        #logo {
+            width: 100%;
+            height: auto;
+        }
+
+        #toggle {
+            padding-top: 20px;
+            padding-left: 20px;
+        }
+
+        #nodedb
         {
-            padding-left: 10px;
-            padding-top: 10px;
+            width: 860px;
+            overflow-x: hidden;
+            min-height: 500px;
         }
+
+        #note
+        {
+            margin-left: 10px;
+            margin-right: 10px;
+        }
+
     </style>
 </head>
 <body>
-<div id="map"></div>
-<div id="legend">
+<div id="sidebar">
+    <img id="logo" src="/img/logo.png" alt="">
     <div id="toggle">
         <input class="node-toggle" type="checkbox" name="online" value="online" checked>
         <label for="online">Online</label>
@@ -48,7 +69,13 @@
         <input class="node-toggle" type="checkbox" name="offline" value="offline">
         <label for="offline">Offline</label>
     </div>
+    <p id="note">Please note you'll need to refresh the page to see changes, and it may take up to 5 minutes to appear, to force display of your changes, click <a href="/clearCache">here.</a></a></p>
+    <iframe id="nodedb" src="about:blank" frameborder="0"></iframe>
 </div>
+<div id="map">
+
+</div>
+
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPRdAnmEnQG73M35lm3nlg7o6lJFpjZ-g"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
 <script src="/js/app.js"></script>

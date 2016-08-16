@@ -18,6 +18,7 @@ $(document).ready(function() {
                     lat: node.coordinates.lat,
                     lng: node.coordinates.lng
                 },
+                nodeid: node.id,
                 title: node.name,
                 status: node.status,
             });
@@ -43,13 +44,15 @@ $(document).ready(function() {
             }
 
             var infowindow = new google.maps.InfoWindow({
-                content: '<center>' + node.name + '<br> <a target="_blank" href="https://members.air-stream.wan/node/shownode/id/' + node.id + '">View on Air-Stream Members</a></center>'
+                content: node.name
             });
 
             marker.addListener('click', function() {
                 if (openwindow) openwindow.close();
                 openwindow = infowindow;
                 infowindow.open(map, marker);
+
+                $('#nodedb').attr('src', "https://members.air-stream.wan/node/shownode/id/" + marker.nodeid);
             });
         });
     });
@@ -99,7 +102,7 @@ $(document).ready(function() {
                         repeat: '10px'
                     }];
                 } else {
-                    googleLink.strokeOpacity = 1;
+                    googleLink.strokeOpacity = 0.6;
 
                     if (link.type == 'BB') {
                         googleLink.strokeColor = '#67D768';
@@ -146,5 +149,11 @@ $(document).ready(function() {
             });
 
         });
+
+        $('#nodedb').on('load', function() {
+            this.height = screen.height - 300;
+        });
+
     });
+
 });

@@ -7,6 +7,7 @@ $app->group('', function () {
 
 $app->group('', function () {
     $this->get('/', [\Map\Http\Controllers\MapController::class, 'index']);
+    $this->get('/clearCache', [\Map\Http\Controllers\MapController::class, 'clearCache']);
 
     $this->get('/logout', [\Map\Http\Controllers\AuthController::class, 'getLogout']);
 

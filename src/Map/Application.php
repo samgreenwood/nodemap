@@ -2,6 +2,7 @@
 
 namespace Map;
 
+use Doctrine\Common\Cache\Cache;
 use Illuminate\Database\Capsule\Manager;
 use Map\Auth\Adapters\StaticAdapter;
 use Map\Auth\StaticAuthenticator;
@@ -38,9 +39,11 @@ class Application extends App
 
                 return $twig;
             },
-            AirStreamXMLReader::class => function () {
-                $cache = new FilesystemCache(__DIR__ . '/../../cache/application');
-                return new AirStreamXMLReader(getenv('NODEDB_USERNAME'), getenv('NODEDB_PASSWORD'), $cache);
+            Cache::class => function() {
+                return new FilesystemCache(__DIR__ . '/../../cache/application');
+            },
+            AirStreamXMLReader::class => function (ContainerInterface $c) {
+                return new AirStreamXMLReader(getenv('NODEDB_USERNAME'), getenv('NODEDB_PASSWORD'), $c->get(Cache::class));
             },
             NodeRepository::class => function (ContainerInterface $c) {
                 $data = $c->get(AirStreamXMLReader::class)->nodes();
