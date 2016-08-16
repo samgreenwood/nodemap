@@ -13,7 +13,7 @@
         body {
             padding-top: 40px;
             padding-bottom: 40px;
-            background-color: #eee;
+            background-color: white;
         }
 
         .form-signin {
@@ -50,6 +50,9 @@
             border-top-left-radius: 0;
             border-top-right-radius: 0;
         }
+        img {
+            width: 100%;
+        }
     </style>
 
 </head>
@@ -58,7 +61,7 @@
 
 <div class="container">
     <form method="POST" action="/login" class="form-signin">
-        <h2 class="form-signin-heading">Air-Stream Map</h2>
+        <h2 class="form-signin-heading"> <img id="logo" src="/img/logo.png" alt=""></h2>
         <label for="username" class="sr-only">Username</label>
         <input type="text" id="username" class="form-control" placeholder="Username" name="username" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
