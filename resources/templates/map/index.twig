@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Air-Stream Map</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #map {
+            height: 100%;
+        }
+
+        #legend {
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            min-height: 115px;
+            min-width: 120px;
+            background: white;
+        }
+
+        #toggle
+        {
+            padding-left: 10px;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="legend">
+    <div id="toggle">
+        <input class="node-toggle" type="checkbox" name="online" value="online" checked>
+        <label for="online">Online</label>
+        <br>
+        <input class="node-toggle" type="checkbox" name="in-build" value="inbuild" checked>
+        <label for="in-build">In Build</label>
+        <br>
+        <input class="node-toggle" type="checkbox" name="potential" value="potential">
+        <label for="potential">Potential</label>
+        <br>
+        <input class="node-toggle" type="checkbox" name="offline" value="offline">
+        <label for="offline">Offline</label>
+    </div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBPRdAnmEnQG73M35lm3nlg7o6lJFpjZ-g"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

@@ -26,7 +26,7 @@ class Application extends App
     {
         $definitions = [
             Twig::class => function (ContainerInterface $c) {
-                $twig = new Twig(__DIR__ . '/../../templates', [
+                $twig = new Twig(__DIR__ . '/../../resources/templates', [
                     'cache' => __DIR__ . '/../../cache/templates',
                     'auto_reload' => true
                 ]);

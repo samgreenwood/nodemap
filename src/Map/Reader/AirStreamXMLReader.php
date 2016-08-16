@@ -54,11 +54,11 @@ class AirStreamXMLReader
         }, $data), array_map(function ($node) {
 
             $statusLookup = [
-                0 => 'Potential',
-                1 => 'Planning',
-                2 => 'In Build',
-                3 => 'Online',
-                4 => 'Offline'
+                0 => 'potential',
+                1 => 'inbuild',
+                2 => 'inbuild',
+                3 => 'online',
+                4 => 'offline'
             ];
 
             $coordinates = new Coordinates((float) $node['lat'], (float) $node['lon']);
