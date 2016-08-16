@@ -38,7 +38,7 @@ $(document).ready(function() {
                 marker.setIcon('/img/mm_20_red.png');
             }
 
-            if (node.status == 'online' || node.status == 'inbuild') {
+            if(node.status == 'online' || node.status == 'inbuild') {
                 marker.setMap(map);
             }
 
@@ -108,12 +108,14 @@ $(document).ready(function() {
                     }
                 }
 
-                googleLink.setMap(map);
-
                 googleLink.nodeStatus = {
                     source: link.source.status,
                     destination: link.destination.status,
                 };
+
+                if(link.source.status != 'potential' && link.destination.status != 'potential') {
+                    googleLink.setMap(map);
+                }
 
                 mapLinks.push(googleLink)
             }
