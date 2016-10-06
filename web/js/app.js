@@ -54,6 +54,12 @@ $(document).ready(function() {
 
                 $('#nodedb').attr('src', "https://members.air-stream.wan/node/shownode/id/" + marker.nodeid);
             });
+
+            marker.addListener('hover', function() {
+                if (openwindow) openwindow.close();
+                openwindow = infowindow;
+                infowindow.open(map, marker);
+            });
         });
     });
 
