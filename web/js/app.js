@@ -52,7 +52,7 @@ $(document).ready(function() {
                 openwindow = infowindow;
                 infowindow.open(map, marker);
 
-                $('#nodedb').attr('src', "https://members.air-stream.wan/node/shownode/id/" + marker.nodeid);
+                $('#nodedb').attr('src', "https://members.air-stream.org/node/shownode/id/" + marker.nodeid);
             });
 
             marker.addListener('hover', function() {
