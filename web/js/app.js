@@ -55,7 +55,7 @@ $(document).ready(function() {
                 $('#nodedb').attr('src', "https://members.air-stream.org/node/shownode/id/" + marker.nodeid);
             });
 
-            marker.addListener('hover', function() {
+            marker.addListener('mouseover', function() {
                 if (openwindow) openwindow.close();
                 openwindow = infowindow;
                 infowindow.open(map, marker);
